@@ -1,4 +1,3 @@
-import 'package:config_app/gallery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
@@ -33,32 +32,15 @@ class _VideoStreamScreenState extends State<VideoStreamScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Stream'),
+        title: Text('Live Streaming'),
       ),
-      body:
-
-          // Column(
-          //   children: [
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => GalleryScreen(),
-          //       ),
-          //     );
-          //   },
-          //   child: Text("View Gallery"),
-          // ),
-          Center(
+      body: Center(
         child: VlcPlayer(
           controller: _vlcViewController,
           aspectRatio: 16 / 9,
           placeholder: Center(child: CircularProgressIndicator()),
         ),
       ),
-      //   ],
-      // ),
     );
   }
 }
