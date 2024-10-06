@@ -1,3 +1,4 @@
+import 'package:config_app/chewie.dart';
 import 'package:config_app/streaming_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -65,11 +66,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _startRTSPStream(String rtspUrl) {
-    _saveImageEverySecond();
+    // _saveImageEverySecond();
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VideoStreamScreen(rtspUrl: rtspUrl),
+        builder: (context) => ChewiewVideoStreamScreen(rtspUrl: rtspUrl),
       ),
     );
   }
@@ -144,7 +145,6 @@ class _HomePageState extends State<HomePage> {
                   _startRTSPStream(_rtspUrlController.text);
                 } else {
                   print('RTSP URL not available');
-      
                 }
               },
               child: Text("Start Live Streaming"),
