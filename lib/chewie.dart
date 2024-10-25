@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart'; // Ensure this import is present
+import 'package:chewie/chewie.dart';
 
 class ChewiewVideoStreamScreen extends StatefulWidget {
   final String rtspUrl;
@@ -26,15 +26,20 @@ class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
             videoPlayerController: _videoPlayerController,
             autoPlay: true,
             looping: false,
-            aspectRatio: 16 / 9,
-            errorBuilder: (context, errorMessage) {
-              return Center(
-                child: Text(
-                  errorMessage,
-                  style: TextStyle(color: Colors.white),
-                ),
-              );
-            },
+            showOptions: false,
+            allowMuting: true,
+            
+            // allowFullScreen: true,
+            aspectRatio: _videoPlayerController.value.aspectRatio,
+
+            // errorBuilder: (context, errorMessage) {
+            //   return Center(
+            //     child: Text(
+            //       errorMessage,
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //   );
+            // },
           );
         });
       });
@@ -53,12 +58,17 @@ class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
       appBar: AppBar(
         title: Text('Live Streaming'),
       ),
-      body: Center(
-        child: _chewieController != null &&
-                _chewieController!.videoPlayerController.value.isInitialized
-            ? Chewie(controller: _chewieController!)
-            : Center(child: CircularProgressIndicator()),
-      ),
+      body: _chewieController != null &&
+              _chewieController!.videoPlayerController.value.isInitialized
+          ? Center(
+              child: Container(
+                alignment: Alignment.center,
+                child: Transform.rotate(
+                    angle: 270 * 3.1416 / 180,
+                    child: Chewie(controller: _chewieController!)),
+              ),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }

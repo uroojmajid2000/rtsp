@@ -1,5 +1,4 @@
 import 'package:config_app/chewie.dart';
-import 'package:config_app/streaming_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -89,8 +88,7 @@ class _HomePageState extends State<HomePage> {
     final directory = await getApplicationDocumentsDirectory();
     final filePath = '${directory.path}/$filename';
     File file = File(filePath);
-    await file.writeAsBytes([]); // Placeholder for actual image data
-
+    await file.writeAsBytes([]);
     print('Image saved: $filePath');
   }
 

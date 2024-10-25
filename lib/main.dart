@@ -1,4 +1,4 @@
-import 'package:config_app/testingpage.dart';
+import 'package:config_app/homepage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
