@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'dart:math' as math;
 
 class ChewiewVideoStreamScreen extends StatefulWidget {
   final String rtspUrl;
@@ -15,6 +16,7 @@ class ChewiewVideoStreamScreen extends StatefulWidget {
 class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
+  bool _isMuted = false;
 
   @override
   void initState() {
@@ -26,20 +28,11 @@ class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
             videoPlayerController: _videoPlayerController,
             autoPlay: true,
             looping: false,
-            showOptions: false,
-            allowMuting: true,
-            
-            // allowFullScreen: true,
+            showOptions: true,
+            showControls: false,
+            allowMuting: false,
+          
             aspectRatio: _videoPlayerController.value.aspectRatio,
-
-            // errorBuilder: (context, errorMessage) {
-            //   return Center(
-            //     child: Text(
-            //       errorMessage,
-            //       style: TextStyle(color: Colors.white),
-            //     ),
-            //   );
-            // },
           );
         });
       });
@@ -52,6 +45,13 @@ class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
     super.dispose();
   }
 
+  void _toggleMute() {
+    setState(() {
+      _isMuted = !_isMuted;
+      _videoPlayerController.setVolume(_isMuted ? 0 : 1); // Mute or unmute
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,13 +60,31 @@ class _ChewiewVideoStreamScreenState extends State<ChewiewVideoStreamScreen> {
       ),
       body: _chewieController != null &&
               _chewieController!.videoPlayerController.value.isInitialized
-          ? Center(
-              child: Container(
-                alignment: Alignment.center,
-                child: Transform.rotate(
-                    angle: 270 * 3.1416 / 180,
-                    child: Chewie(controller: _chewieController!)),
-              ),
+          ? Stack(
+              // alignment: Alignment.center,
+              children: [
+                // Video rotated by 270 degrees (landscape view)
+                Transform.rotate(
+                  angle: 270 * math.pi / 180,
+                  child: AspectRatio(
+                    aspectRatio: _videoPlayerController.value.aspectRatio,
+                    child: Chewie(controller: _chewieController!),
+                  ),
+                ),
+                // Mute button overlay
+                Positioned(
+                  bottom: 0,
+                  left: 50,
+                  child: IconButton(
+                    icon: Icon(
+                      _isMuted ? Icons.volume_off : Icons.volume_up,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: _toggleMute,
+                  ),
+                ),
+              ],
             )
           : Center(child: CircularProgressIndicator()),
     );
